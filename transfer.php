@@ -27,7 +27,7 @@ if (session_status() == PHP_SESSION_NONE) session_start_mod();
 		returnoutput('200');
 	}
 	if(isset($_GET['username'])){
-		if(isset($_GET['auth']) && $_GET['auth']!="" && isset($_GET['username']) && $_GET['username']!="" && $_GET['req']=="caldata"){
+		if(isset($_GET['auth']) && isset($_GET['username']) && $_GET['username']!="" && $_GET['req']=="caldata"){
 			$username=$_GET['username'];
 			$auth=$_GET['auth'];
 			$sql="SELECT * FROM daten WHERE username = ? and privkey = ?";
@@ -43,7 +43,11 @@ if (session_status() == PHP_SESSION_NONE) session_start_mod();
 					$sql = "DELETE FROM daten WHERE username = ?";
 					$statement = $mysqli->prepare($sql);
 					$statement->bind_param('s', $id);
-					$tmp="deleted";
+					if($statement->execute()){
+						$tmp="deleted";
+					}else{
+						$tmp="error";
+					}					
 				}else{
 					$sql = "UPDATE daten SET dienste = ?, dienstdaten = ? WHERE username = ?";
 					$statement = $mysqli->prepare($sql);
@@ -102,10 +106,10 @@ if (session_status() == PHP_SESSION_NONE) session_start_mod();
 				}	
 			}
 		}else{
-			returnoutput("401a");
+			returnoutput("401");
 		}
 	}else{
-		returnoutput("401b");
+		returnoutput("401");
 	}
 	returnoutput($tmp);
 

@@ -63,7 +63,7 @@ function delete_all_between($beginning, $end, $string) {
 	$data = $result->fetch_array();
 	if($data['username']==0 || $data['username']==""){
 		sleep(8);
-		header("HTTP/1.1 401 Unauthorized");
+		header("HTTP/1.1 403 Forbidden");
 		exit;
 	}
 	if(!isset($_GET['debug']) && !isset($_GET['raw'])){
